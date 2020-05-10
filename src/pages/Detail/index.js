@@ -3,39 +3,25 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import './style.css';
 
-export default function NewIncident({match}) {
+export default function Detail({match}) {
     const [beer, setBeer] = useState({});
 
     useEffect(()=>{
         async function loadBeer() {
           const response = await api.findById(match.params.id);
-          const entries = Object.entries(response.data[0].ingredients);
+          const beer = response.data[0];
           var sb = [];
-          entries.forEach(([key, value], i) => {
-            if (i < 2) {
-              sb.push(`\n${i+1}.${key}\n`);  
-              value.forEach((element) => {
-                switch (key) {
-                  case "malt":
-                    sb.push(
-                      ` Name: ${element.name}, Amount: ${element.amount.value} ${element.amount.unit} \n`
-                    );
-                    break;
-                  case "hops":
-                    sb.push(
-                      ` Name: ${element.name}, Amount: ${element.amount.value} ${element.amount.unit}, Attribute: ${element.attribute}, Add: ${element.add} \n`
-                    );
-                    break;
-                  default:
-                      break;  
-                }
-              });
-            } else {
-                sb.push(`\n${i+1}.${key}\n ${value}`);
-            }
-          });
-          const data = response.data[0];
-          setBeer({...data, all_ingredients: sb.join("")});
+          sb.push(`1. Malt:\n\n`)
+          sb.push(beer.ingredients?.malt?.map(malt => (
+             `${malt.name} - ${malt.amount.value} ${malt.amount.unit} \n`
+          )));
+          sb.push(`\n2. Hops:\n\n`)
+          sb.push(beer.ingredients?.hops?.map(hop => (
+             `${hop.name} - ${hop.amount.value} ${hop.amount.unit} - ${hop.attribute} - ${hop.add} \n`
+          )));
+          sb.push(`\n3. Yeast:\n\n`);
+          sb.push(beer.ingredients?.yeast);
+          setBeer({...beer, all_ingredients: sb.join("")});
         }
         loadBeer();
     },[match.params.id]);
@@ -46,7 +32,6 @@ export default function NewIncident({match}) {
           <section>
             <img src={beer.image_url} alt="cerveja" />
           </section>
-                    
           
           <form >
           <h1>Características da Cerveja</h1>

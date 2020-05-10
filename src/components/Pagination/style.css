@@ -1,0 +1,32 @@
+.buttonSearch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+.buttonSearch button{
+  width: 49%;
+  height: 60px;
+  background: #e9d208;
+  border: 0;
+  border-radius: 8px;
+  color: #FFF;
+  font-weight: 700;
+  margin-top: 16px;
+  transition: 16px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 60px;
+  transition: filter 0.2s;
+}
+
+.buttonSearch button:hover {
+  filter: brightness(95%);
+}
+
+.buttonSearch button:disabled {
+  background-color: rgba(120, 120, 120, .8);;
+}

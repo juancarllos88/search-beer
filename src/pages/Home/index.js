@@ -1,69 +1,68 @@
 import React, {useState, useEffect} from 'react';
-import {useForm} from 'react-hook-form'; //useEffect serve para disparar alguma função em algum determinado momento do componente
-import { Link, useHistory } from 'react-router-dom';
-import { FiPower,FiSearch } from 'react-icons/fi';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { useHistory } from 'react-router-dom';
+
+import Load from '../../components/Load';
+import Header from '../../components/Header';
+import ListBeer from '../../components/ListBeer';
+import Pagination from '../../components/Pagination';
 
 import api from '../../services/api';
-import {getUser} from '../../services/auth';
 
 import './style.css';
-import logoImg from '../../assets/logo.png';
 
-export default function Profile() {
+export default function Home() {
     const [beers, setBeers] = useState([]);
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(1);
     const [load, setLoad] = useState(true);
     const [show, setShow] = useState(true);
-    const { register, handleSubmit, getValues } = useForm();
+    const [searchField, setSearchField] = useState('');
+
 
     const history = useHistory();
-    const userName = getUser();
-
+    //useEffect serve para disparar alguma função em algum determinado momento do componente
     useEffect(() => {
-      async function loadBeers() {
-        try {
-          setLoad(true);
-          const response = await api.findByName(1, 10);
-          setBeers(response.data);
-        } catch (err) {
-          alert("Ocorreu um erro");
-        } finally {
-          setTimeout(() => {
-            setLoad(false);
-          }, 500);
-        }
-      }
       loadBeers();
     }, []);
 
-    const handleLogout = () => {
-      localStorage.clear();
-      history.push("/");
-    };
-
-    const pagination = async () => {
+    const loadBeers = async (pageIndex = 1) => {
       try {
-        const nome = getParameter();
+        const nome = searchField === '' ? '_' : searchField;
         setLoad(true);
-        const response = await api.findByName(page, 10, nome);
-        setBeers((values) => [...values, ...response.data]);
-        setPage(page+1);
+        const response = await api.findByName(pageIndex, 10, nome);
+        setBeers(response.data);
         showButtonPagination(response.data);
       } catch (err) {
         alert("Ocorreu um erro");
       } finally {
         setTimeout(() => {
           setLoad(false);
-        }, 500);
+        }, 250);
+      }
+    }
+
+    const handleLogout = () => {
+      localStorage.clear();
+      history.push("/");
+    };
+
+    const next = async () => {
+      try {
+        loadBeers(page+1);
+        setPage(page+1);
+      } catch (err) {
+        alert("Ocorreu um erro");
       }
     };
 
-    const getParameter = () => {
-      const value = getValues("nome");
-      return value === '' ? '_' : value;
-    }
+    const previous = async () => {
+      try {
+        loadBeers(page-1);
+        setPage(page-1);
+      } catch (err) {
+        alert("Ocorreu um erro");
+      }
+    };
+
 
     const showButtonPagination = (value) => {
       if(value.length < 10){
@@ -73,76 +72,34 @@ export default function Profile() {
       }
     }
 
-    const search = async (data) => {
+    const handleSearch = async (data) => {
       try {
-        const nome = getParameter();
+        const nome = data.nome === '' ? '_' : data.nome;
+        setSearchField(nome);
         setLoad(true);
         const response = await api.findByName(1, 10, nome);
-        setBeers([]);
-        setBeers((values) => [...values, ...response.data]);
-        setPage(2);
+        //setBeers([]);
+        setBeers(response.data);
+        setPage(1);
         showButtonPagination(response.data);
       } catch (err) {
         alert("Ocorreu um erro");
       } finally {
         setTimeout(() => {
           setLoad(false);
-        }, 500);
+        }, 250);
       }
     };
 
 
     return (
         <div className="home-container">
-            <header>
-                   
-                <img src={logoImg} alt="Logo" className="imgLogo" />
-                
-                <span>Bem vindo(a), {userName}</span>
-
-                <Link to="/" />
-                
-                <form onSubmit={handleSubmit(search)}>
-                    <input placeholder="nome da cerveja" className="inputSearch" name="nome" ref={register}/>
-                    <button type="submit">
-                        <FiSearch size={18} color="#E02041" />
-                    </button>
-                </form>
-
-                <button onClick={handleLogout} type="button">
-                    <FiPower size={18} color="#E02041" />
-                </button>
-            </header>
-            
-
+            <Header handleSearch={handleSearch} handleLogout={handleLogout}/> 
             <h1>Catálogo de Cervejas</h1>
-            {load ? 
-            (<div className="loading"><FontAwesomeIcon icon={faSpinner} spin /></div>) 
+            {load ? <Load/> 
             :(<>
-            <ul>
-                {beers.map(beer => (
-                    <li key={beer.id}>
-                        <img src={beer.image_url} alt="Cerveja"/>
-                        <div>
-                        <strong>Nome: </strong>
-                        <p>{beer.name}</p>
-
-                        <strong>Slogan: </strong>
-                        <p>{beer.tagline}</p>
-
-                        <Link to={`/detail/${beer.id}`}>
-                        <button type="button">
-                            <FiSearch size={35} color="#e9d208" />
-                        </button>
-                        </Link>
-                        </div>
-                    </li>
-                ))}
-
-            </ul>
-            {show ? 
-            (<button className="button" type="button" onClick={pagination}>Carregar ...</button>)
-             :''}
+            <ListBeer beers={beers}/>
+            {show ? <Pagination handlePrevious={previous} handlerNext={next} page={page}/>:''}
             </>)}
         </div>
     );
