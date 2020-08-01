@@ -49,6 +49,14 @@ cd search-beer
 docker build -t juancarllos88/search-beer:0.0.2 .
 ```
 
+Acesso ao serviço
+
+Acesse o serviço no navegador usando as informações abaixo.
+
+* URL: http://localhost:3000 
+* Login: qualquer nome 
+
+
 ## Referências:
 
 https://docs.docker.com/engine/tutorials/dockerimages/
