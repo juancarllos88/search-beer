@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+# Informações sobre a imagem do Search Beer no DockerHub
 
-### `yarn start`
+A imagem está disponível na URL a seguir.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+https://hub.docker.com/r/juancarllos88/search-beer
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+O Search Beer é uma aplicação de estudo utilizando ReactJs.
 
-### `yarn test`
+Imagens Bases utilizadas.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* node:13.12.0-alpine
+* nginx:stable-alpine
 
-### `yarn build`
+## Como usar a imagem?
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Baixe a imagem do DockerHub:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```sh
+docker pull juancarllos88/search-beer:0.0.2
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Crie um contêiner com uma das formas abaixo.
 
-### `yarn eject`
+a) contêiner em background:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```sh
+docker run -d --name search-beer -p 3000:80 juancarllos88/search-beer:0.0.2
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+b) contêiner interativo:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```sh
+docker run -i -t --name=search-beer -p 3000:80 juancarllos88/search-beer:0.0.2 /bin/bash
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Compile a imagem Docker a partir do DockerFile.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* Baixe o código do repositório Git.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+https://github.com/juancarllos88/search-beer.git
+```
 
-### Code Splitting
+```sh
+cd search-beer
+docker build -t juancarllos88/search-beer:0.0.2 .
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Referências:
 
-### Analyzing the Bundle Size
+https://docs.docker.com/engine/tutorials/dockerimages/
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

@@ -1,5 +1,6 @@
-import React, {useState } from 'react';
+import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
+
 
 import {setUSer} from '../../services/auth';
 
@@ -12,12 +13,19 @@ export default function Logon() {
     const [id, setId] = useState(''); 
     const history = useHistory();
 
+
     async function handleLogin(e) {
         e.preventDefault();
 
         try {
             setUSer(id);
-            history.push('/home')
+            // const carro  = {
+            //     valor: 1,
+            //     valor2: 2
+                
+            // }
+            // history.push('/home/1',carro)
+            history.push('/home');
 
         } catch (err) {
             alert('Falha no login, tente novamente.');

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory,useLocation,useParams } from 'react-router-dom';
 
 import Load from '../../components/Load';
 import Header from '../../components/Header';
@@ -10,7 +10,7 @@ import api from '../../services/api';
 
 import './style.css';
 
-export default function Home() {
+export default function Home({match}) {
     const [beers, setBeers] = useState([]);
     const [page, setPage] = useState(1);
     const [load, setLoad] = useState(true);
@@ -19,8 +19,13 @@ export default function Home() {
 
 
     const history = useHistory();
+    // const state = useLocation();
+    // const params = useParams();
     //useEffect serve para disparar alguma função em algum determinado momento do componente
     useEffect(() => {
+      // console.log(match);
+      // console.log(state);
+      // console.log(params);
       loadBeers();
     }, []);
 
