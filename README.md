@@ -18,21 +18,14 @@ Imagens Bases utilizadas.
 * Baixe a imagem do DockerHub:
 
 ```sh
-docker pull juancarllos88/search-beer:0.0.2
+docker pull juancarllos88/search-beer:1.0.0
 ```
 
-* Crie um contêiner com uma das formas abaixo.
+* Crie um contêiner da seguinte forma:
 
-a) contêiner em background:
-
-```sh
-docker run -d --name search-beer -p 3000:80 juancarllos88/search-beer:0.0.2
-```
-
-b) contêiner interativo:
 
 ```sh
-docker run -i -t --name=search-beer -p 3000:80 juancarllos88/search-beer:0.0.2 /bin/bash
+docker run -d --name search-beer -p 3000:80 juancarllos88/search-beer:1.0.0
 ```
 
 
@@ -41,15 +34,17 @@ docker run -i -t --name=search-beer -p 3000:80 juancarllos88/search-beer:0.0.2 /
 * Baixe o código do repositório Git.
 
 ```sh
-https://github.com/juancarllos88/search-beer.git
+git clone https://github.com/juancarllos88/search-beer.git
 ```
+
+* Para compilar a imagem.
 
 ```sh
 cd search-beer
-docker build -t juancarllos88/search-beer:0.0.2 .
+docker build -t juancarllos88/search-beer:1.0.0 .
 ```
 
-Acesso ao serviço
+## Acesso ao serviço
 
 Acesse o serviço no navegador usando as informações abaixo.
 
